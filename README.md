@@ -60,11 +60,12 @@ pnpm dev
 | ------------------ | -------------------------------------------- |
 | `pnpm dev`         | `roles.localhost:4000` で開発サーバーを起動  |
 | `pnpm lint`        | ESLint                                       |
+| `pnpm test`        | スキーマ `roles` の割り当てと見本を試す      |
 | `pnpm build`       | 本番ビルド                                   |
 | `pnpm db:generate` | スキーマ `roles` の Prisma Client を生成する |
 | `pnpm db:migrate`  | スキーマ `roles` のマイグレーションを適用する |
 
-骨格のユニットテストと統合テストは `participant-app-base` で実行します。接続先と準備は [docs/testing.md](docs/testing.md) です。共有テーブルの変更は認証サーバーだけが行います。共有クライアントの `db:generate` もライブラリで実行します。`db:seed` はありません。
+`pnpm test` は、起動済みのローカル PostgreSQL の `TEST_DATABASE_URL` へ接続し、スキーマ `roles` だけを試します。入場やセッションのテストは `participant-app-base` で実行します。接続先と準備は [docs/testing.md](docs/testing.md) です。共有テーブルの変更は認証サーバーだけが行います。共有クライアントの `db:generate` もライブラリで実行します。`db:seed` はありません。
 
 本番イメージのビルドコンテキストは、このリポジトリです。`pnpm install` は隣の作業ツリーを使い、イメージのビルドは [participant-app-base.rev](participant-app-base.rev) のコミットを GitHub から取得して `/participant-app-base` に置きます。イメージに入るのは、GitHub 上のそのコミットです。
 
