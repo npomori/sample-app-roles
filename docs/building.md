@@ -61,25 +61,30 @@ PostgreSQL と Redis の接続文字列、許す操作、`REDIS_KEY_PREFIX` と 
 
 ```ts
 import { App } from 'astro/app'
-import { actions, middleware, pages } from 'astro/hono'
+import { actions, getFetchState, middleware, pages } from 'astro/hono'
 import { createParticipantFetch } from 'participant-app-base'
+import { updateNote } from '@/server/note'
 
 export default createParticipantFetch({
   App,
   middleware,
   actions,
   pages,
-  mutations: [],
-  routes() {}
+  mutations: [{ method: 'POST', path: '/admin/note' }],
+  routes(app) {
+    app.post('/admin/note', (c) => updateNote(c.req.raw, getFetchState(c).locals.access))
+  }
 })
 ```
 
-[astro.config.mjs](../astro.config.mjs) で integration を足します。この参考実装の表示名は「参加アプリ」です。
+このアプリは見本の本文を `POST /admin/note` で更新します。`getFetchState` はミドルウェアが載せた `locals.access` を渡します。
+
+[astro.config.mjs](../astro.config.mjs) で integration を足します。このアプリの表示名は「ロール見本」です。
 
 ```ts
 integrations: [
   participantAuth({
-    displayName: '参加アプリ',
+    displayName: 'ロール見本',
     publicPaths: ['/']
   })
 ]
@@ -126,7 +131,7 @@ if (access.kind === 'public') throw new Error('画面の権限が解決されて
 
 `Origin` が `APP_ORIGIN` と完全に一致する場合だけ受け付けます。未認証の更新には 401「ログインが必要です」を返します。引き渡しは開始しません。
 
-アプリ内ロールの定義がない間、受け付ける更新は `POST /logout` だけです。
+アプリ内ロールの定義がない間、受け付ける更新は `POST /logout` だけです。このアプリは定義があるので、`POST /admin/note` も受けます。
 
 アプリ内ロールは、`public` 以外のスキーマに `User.id` をキーにして置きます。そのスキーマだけ、このアプリがマイグレーションします。`AppGrant` には書きません。共有テーブルのクライアントへ、アプリのモデルは足しません。
 

@@ -1,7 +1,7 @@
 # ビルドコンテキストはこのリポジトリ。
 # ローカルの pnpm は隣の participant-app-base を file: で使う。
 # イメージのビルドは participant-app-base.rev のコミットを GitHub から取る。
-# docker build -t sample-app .
+# docker build -t sample-app-roles .
 
 FROM node:24-alpine AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate

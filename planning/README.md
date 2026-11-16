@@ -4,13 +4,13 @@
 
 共通ロールは認証サーバーの [auth-app-role-authorization-spec.md](https://github.com/npomori/auth-server/blob/main/planning/auth-app-role-authorization-spec.md) です。このアプリの公開パスは `/` です。管理画面は `/admin` です。
 
-このアプリの画面と確認手順は [README.md](../README.md) と [docs/access.md](../docs/access.md) です。下の表の app-permissions は、その確定資料より優先しません。
+このアプリの仕様は [docs/app.md](../docs/app.md) です。画面と確認手順は [README.md](../README.md) と [docs/access.md](../docs/access.md) です。下の表の app-permissions は、その確定資料より優先しません。
 
-ロール対応の別リポジトリの下書きは [sample-app-roles.md](sample-app-roles.md) です。認証サーバーのロール仕様と app-permissions の具体化であり、それらより優先しません。このアプリの画面と更新口は変えません。
+[sample-app-roles.md](sample-app-roles.md) は、このリポジトリへロール見本を足す下書きです。認証サーバーのロール仕様と app-permissions の具体化であり、[docs/app.md](../docs/app.md) より優先しません。`/roles` の差し替えは、ライブラリの口ができるまで下書きの範囲外のままです。
 
 | 文書 | 内容 |
 | --- | --- |
 | [app-permissions/grant.md](app-permissions/grant.md) | 認証サーバーと参加アプリが同じ手順で使う利用許可 |
 | [app-permissions/auth-server.md](app-permissions/auth-server.md) | 認証サーバーの権限管理、管理画面/API、引き渡し条件 |
 | [app-permissions/participant-app.md](app-permissions/participant-app.md) | 参加アプリの入場、画面、参照する SQL |
-| [sample-app-roles.md](sample-app-roles.md) | アプリ内ロールを持つ別リポジトリの下書き |
+| [sample-app-roles.md](sample-app-roles.md) | ロール見本の下書き。採用済みの範囲は `docs/` |

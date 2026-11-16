@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/roles"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["roles"]
+}
+
+enum AppRole {
+  editor
+  viewer
+
+  @@schema("roles")
+}
+
+/// 利用者一人につき1行。主キーは共有 User.id。メールは持たない。
+model Assignment {
+  userId String  @id
+  role   AppRole
+
+  @@schema("roles")
+}
+
+/// 見本の項目。本文は1行。
+model Note {
+  id   Int    @id
+  body String
+
+  @@schema("roles")
+}

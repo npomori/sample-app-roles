@@ -70,7 +70,7 @@ export default createParticipantFetch({
 - `addMiddleware` で入場
 - `injectRoute` で `/callback`、`/logged-out`、`/grants`、`/roles`
 
-注入する `.astro` はパッケージのソースのまま配布し、参加アプリのビルドがコンパイルします。ヘッダの表示名は integration の設定です。この参考実装の表示名は「参加アプリ」です。
+注入する `.astro` はパッケージのソースのまま配布し、参加アプリのビルドがコンパイルします。ヘッダの表示名は integration の設定です。このアプリの表示名は「ロール見本」です。
 
 ページは `Astro.locals.access` だけを参照します。ライブラリは `PageAccess` を公開し、参加アプリの `src/env.d.ts` が `App.Locals` へ接続します。
 
@@ -125,6 +125,6 @@ declare namespace App {
 
 ## この参考実装のあと
 
-移したファイルは、このリポジトリから削除します。`src/fetch.ts` は仮想モジュールを渡すファイルにし、公開フロント、管理画面、表示名「参加アプリ」は残します。
+移したファイルは、このリポジトリから削除します。`src/fetch.ts` は仮想モジュールを渡すファイルにし、公開フロント、管理画面、表示名「ロール見本」は残します。
 
 骨格の契約は [participant-app-base](https://github.com/npomori/participant-app-base) の `docs/page-access.md`、`docs/layout.md`、`docs/terminology.md` です。このリポジトリの `docs/` は、このアプリの画面、接続、確認手順を記載します。

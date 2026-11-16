@@ -2,7 +2,7 @@
 
 参加アプリは、認証サーバーと同じ PostgreSQL と Redis に接続します。接続文字列のホストとデータベース名は認証サーバーと同じです。ユーザーとパスワードは、読み書きできる認証サーバー用とは別にします。
 
-このアプリはロールを作成せず、マイグレーションも実行しません。`db:migrate` と `db:seed` はありません。
+共有テーブルのロール作成とマイグレーションは行いません。スキーマ `roles` だけ、このアプリがマイグレーションします。`db:seed` はありません。
 
 ## PostgreSQL
 
@@ -25,6 +25,18 @@ DATABASE_URL="postgresql://app_participant:replace-me@db-host:5432/database_name
 ```
 
 `replace-me` は `CREATE ROLE` で決めたパスワードです。`database_name` は認証サーバーの `DATABASE_URL` と同じデータベース名です。認証サーバー側の接続文字列は、読み書きできるユーザーのままにします。
+
+## スキーマ `roles`
+
+見本の割り当てと本文は、スキーマ `roles` に置きます。`public` には置きません。`AppGrant` には書きません。
+
+管理者が、同じデータベースで次を一度実行します。スキーマの所有者を `app_participant` にすると、そのロールがスキーマ内のテーブルを作れます。`public` の共有テーブルへの書き込みは与えません。
+
+```sql
+CREATE SCHEMA IF NOT EXISTS roles AUTHORIZATION app_participant;
+```
+
+そのあと、このアプリの `DATABASE_URL` で `pnpm db:migrate` を実行します。適用されるのはスキーマ `roles` の割り当てと見本の本文だけです。
 
 ## Redis
 

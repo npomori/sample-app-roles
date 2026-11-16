@@ -1,6 +1,6 @@
 # ロール対応の参加アプリ
 
-この下書きは、リポジトリ `sample-app-roles` の仕様です。このリポジトリの参加アプリ（公開パス `/`、管理画面 `/admin`、アプリ内ロールなし）は変えません。確定した画面は [docs/access.md](../docs/access.md) です。
+この下書きは、リポジトリ `sample-app-roles` の検討メモです。確定した仕様は [docs/app.md](../docs/app.md) です。この下書きは、その確定資料より優先しません。
 
 共通ロール、利用許可、アプリ内ロールの分け方は、認証サーバーの [auth-app-role-authorization-spec.md](https://github.com/npomori/auth-server/blob/main/planning/auth-app-role-authorization-spec.md) に従います。入場、Cookie、利用許可、`/grants` の手順は [app-permissions](app-permissions/README.md) に従います。更新の足し方は [docs/building.md](../docs/building.md) の「更新を足すとき」に従います。この下書きは、その具体化だけを書きます。
 

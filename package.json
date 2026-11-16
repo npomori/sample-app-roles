@@ -1,12 +1,14 @@
 {
-  "name": "sample-app",
-  "description": "Participant app that verifies session handoff from a WebAuthn authentication server",
+  "name": "sample-app-roles",
+  "description": "Participant app for in-app roles. Admits signed-in users and provides the role sample screens for each role.",
   "private": true,
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && pnpm run env:check:build",
+    "dev": "prisma generate && astro dev",
+    "build": "prisma generate && astro build && pnpm run env:check:build",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
     "preview": "astro preview",
     "start": "node ./dist/server/entry.mjs",
     "format": "prettier -w .",
@@ -16,6 +18,8 @@
   "dependencies": {
     "@astrojs/node": "^11.1.13",
     "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "prisma": "^7.10.1",
     "astro": "^7.4.12",
     "dotenv": "^18.0.10",
     "participant-app-base": "file:../participant-app-base",

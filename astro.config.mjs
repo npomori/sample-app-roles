@@ -8,7 +8,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
-  integrations: [participantAuth({ displayName: '参加アプリ', publicPaths: ['/'] })],
+  integrations: [participantAuth({ displayName: 'ロール見本', publicPaths: ['/'] })],
   session: false,
   server: {
     port: 4000,

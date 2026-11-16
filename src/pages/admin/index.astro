@@ -1,16 +1,22 @@
 ---
 import Layout from '@/layouts/AdminLayout.astro'
 import { roleLabel } from 'participant-app-base'
+import { appRoleLabel, canEditNote, readAssignment, readNote } from '@/server/roles'
 
 const access = Astro.locals.access
 if (access.kind === 'public') throw new Error('画面の権限が解決されていません')
 
+const appRole = access.kind === 'ok' ? await readAssignment(access.user.id) : null
+const note = access.kind === 'ok' ? await readNote() : ''
 const profile =
   access.kind === 'ok'
     ? {
         email: access.user.email,
         name: access.user.name,
-        role: roleLabel(access.user.role)
+        role: roleLabel(access.user.role),
+        appRole,
+        note,
+        canEdit: canEditNote(access.user.role, appRole)
       }
     : null
 
@@ -39,7 +45,31 @@ if (!profile) Astro.response.status = 403
             <dt class="text-sm text-gray-500">利用許可</dt>
             <dd>利用可</dd>
           </div>
+          <div>
+            <dt class="text-sm text-gray-500">アプリ内ロール</dt>
+            <dd>{appRoleLabel(profile.appRole)}</dd>
+          </div>
         </dl>
+        <div class="mt-8">
+          <h2 class="text-sm text-gray-500">見本の項目</h2>
+          {profile.canEdit ? (
+            <form method="post" action="/admin/note" class="mt-2 space-y-3">
+              <textarea
+                name="body"
+                rows="6"
+                class="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900"
+                >{profile.note}</textarea>
+              <button
+                type="submit"
+                class="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+              >
+                保存
+              </button>
+            </form>
+          ) : (
+            <p class="mt-2 whitespace-pre-wrap text-gray-900">{profile.note}</p>
+          )}
+        </div>
       </section>
     ) : (
       <p class="text-gray-800">このアプリを利用する権限がありません</p>
