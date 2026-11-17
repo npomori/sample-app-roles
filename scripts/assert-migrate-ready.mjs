@@ -43,17 +43,11 @@ async function main() {
       fail('スキーマ roles にテーブルを作る権限がありません。所有者を app_participant にしてください')
     }
 
-    const failedInRoles = await failedMigration(
+    const failed = await failedMigration(
       client,
       'SELECT migration_name FROM roles."_prisma_migrations" WHERE finished_at IS NULL AND rolled_back_at IS NULL LIMIT 1',
       'roles."_prisma_migrations"'
     )
-    const failedInPublic = await failedMigration(
-      client,
-      'SELECT migration_name FROM public."_prisma_migrations" WHERE finished_at IS NULL AND rolled_back_at IS NULL LIMIT 1',
-      'public."_prisma_migrations"'
-    )
-    const failed = failedInRoles ?? failedInPublic
     if (failed) {
       fail(`マイグレーション ${failed} は失敗した記録が残っています。記録を消してから再デプロイしてください`)
     }
