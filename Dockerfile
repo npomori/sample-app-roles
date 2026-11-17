@@ -49,7 +49,7 @@ COPY --from=dependencies --chown=nodejs:nodejs /app/node_modules ./node_modules
 COPY --from=build --chown=nodejs:nodejs /app/dist ./dist
 COPY --chown=nodejs:nodejs prisma ./prisma
 COPY --chown=nodejs:nodejs prisma.config.ts ./
-COPY --chown=nodejs:nodejs scripts/assert-migrate-ready.mjs ./scripts/assert-migrate-ready.mjs
+COPY --chown=nodejs:nodejs scripts/assert-migrate-ready.mjs scripts/migrate-deploy.mjs ./scripts/
 COPY --chown=nodejs:nodejs entrypoint.sh healthcheck.sh ./
 RUN chmod +x entrypoint.sh healthcheck.sh
 
