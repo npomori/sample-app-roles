@@ -14,7 +14,7 @@
 
 接続先は、起動済みのローカル PostgreSQL の `TEST_DATABASE_URL` です。開発用 `DATABASE_URL` と同じデータベースなら中止します。テストランナーはコンテナを起動しません。データベースが無いときは、`participant-app-base` の `pnpm db:ensure-test` で例のデータベースを作るか、同じ PostgreSQL に別のデータベースを用意します。
 
-適用するのは [マイグレーション](../prisma/migrations/20261116023000_roles/migration.sql) のスキーマ `roles` だけです。`TEST_DATABASE_URL` のユーザーは、そのスキーマを作り、そのテーブルを読み書きできます。各テストの前に消すのは `roles."Assignment"` と `roles."Note"` だけです。`public` の共有テーブルには触れません。
+テストの準備は、先にスキーマ `roles` を作り、そのあと [マイグレーション](../prisma/migrations/20261116023000_roles/migration.sql) で型とテーブルを作ります。`TEST_DATABASE_URL` のユーザーは、そのスキーマを作り、そのテーブルを読み書きできます。各テストの前に消すのは `roles."Assignment"` と `roles."Note"` だけです。`public` の共有テーブルには触れません。
 
 確認するのは次です。
 

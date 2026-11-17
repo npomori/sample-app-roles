@@ -39,6 +39,7 @@ RUN pnpm run build
 FROM node:24-alpine AS production
 WORKDIR /app
 RUN apk add --no-cache bash curl
+RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
@@ -46,6 +47,8 @@ COPY --from=library --chown=nodejs:nodejs /participant-app-base /participant-app
 COPY --chown=nodejs:nodejs package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY --from=dependencies --chown=nodejs:nodejs /app/node_modules ./node_modules
 COPY --from=build --chown=nodejs:nodejs /app/dist ./dist
+COPY --chown=nodejs:nodejs prisma ./prisma
+COPY --chown=nodejs:nodejs prisma.config.ts ./
 COPY --chown=nodejs:nodejs entrypoint.sh healthcheck.sh ./
 RUN chmod +x entrypoint.sh healthcheck.sh
 

@@ -14,6 +14,7 @@ export default async function setup(): Promise<void> {
       `SELECT to_regclass('roles."Assignment"')::text AS ready`
     )
     if (!existing.rows[0]?.ready) {
+      await pool.query('CREATE SCHEMA IF NOT EXISTS roles')
       const sql = fs.readFileSync(
         new URL('../../prisma/migrations/20261116023000_roles/migration.sql', import.meta.url),
         'utf8'

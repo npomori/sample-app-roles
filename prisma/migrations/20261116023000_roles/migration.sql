@@ -1,6 +1,3 @@
--- CreateSchema
-CREATE SCHEMA IF NOT EXISTS "roles";
-
 -- CreateEnum
 CREATE TYPE "roles"."AppRole" AS ENUM ('editor', 'viewer');
 

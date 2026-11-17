@@ -36,5 +36,13 @@ if [ "$attempt" -eq "$max_attempts" ]; then
 fi
 
 echo "Database connected"
+echo "Running migrations..."
+if pnpm db:migrate; then
+  echo "Migrations completed"
+else
+  echo "Migration failed"
+  exit 1
+fi
+
 echo "Starting Node.js server..."
 exec node dist/server/entry.mjs

@@ -42,7 +42,7 @@
 - `redirectUris` に `http://roles.localhost:4000/callback`
 - 既定が `allow` でないアプリは、利用者ごとの `AppGrant` を `allow` にする。seed 管理者にも自動では付かない
 
-PostgreSQL と Redis は認証サーバーと同じ場所へ、権限を絞った `app_participant` で接続します。手順は [docs/connections.md](docs/connections.md) です。共有テーブルのマイグレーションは行いません。スキーマ `roles` は、接続の手順のあと `pnpm db:migrate` でこのアプリが適用します。
+PostgreSQL と Redis は認証サーバーと同じ場所へ、権限を絞った `app_participant` で接続します。接続の制限は [docs/connections.md](docs/connections.md)、データベースの初期化は [docs/db-init.md](docs/db-init.md) です。共有テーブルのマイグレーションは行いません。スキーマ `roles` の型とテーブルは、起動時の `pnpm db:migrate` でこのアプリが適用します。初回起動の前に `pnpm db:init` を実行します。コマンドを実行できないときは、同じ文書の SQL を手入力します。
 
 ```bash
 pnpm install
@@ -63,6 +63,7 @@ pnpm dev
 | `pnpm test`        | スキーマ `roles` の割り当てと見本を試す      |
 | `pnpm build`       | 本番ビルド                                   |
 | `pnpm db:generate` | スキーマ `roles` の Prisma Client を生成する |
+| `pnpm db:init`     | ロール、参照権限、スキーマ `roles` を用意する |
 | `pnpm db:migrate`  | スキーマ `roles` のマイグレーションを適用する |
 
 `pnpm test` は、起動済みのローカル PostgreSQL の `TEST_DATABASE_URL` へ接続し、スキーマ `roles` だけを試します。入場やセッションのテストは `participant-app-base` で実行します。接続先と準備は [docs/testing.md](docs/testing.md) です。共有テーブルの変更は認証サーバーだけが行います。共有クライアントの `db:generate` もライブラリで実行します。`db:seed` はありません。

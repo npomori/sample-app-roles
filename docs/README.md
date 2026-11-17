@@ -11,5 +11,6 @@
 | [library.md](library.md) | 認証骨格のライブラリ化 |
 | [access.md](access.md) | 権限とアクセス制御 |
 | [connections.md](connections.md) | PostgreSQL と Redis の接続 |
+| [db-init.md](db-init.md) | 認証サーバーと参加アプリで共通のデータベース初期化 |
 | [testing.md](testing.md) | 自動テスト |
 | [verification.md](verification.md) | 手動の動作確認 |

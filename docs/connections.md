@@ -6,7 +6,7 @@
 
 ## PostgreSQL
 
-管理者が、認証サーバーと同じデータベースへロール `app_participant` を一度作ります。アプリを増やすたびにロールは作りません。ひな型は認証サーバーの [participant-access.sql](https://github.com/npomori/auth-server/blob/main/planning/participant/participant-access.sql) です。`CREATE ROLE` と `GRANT` はコメントアウトされているので、データベース名とパスワードを置き換えてから実行します。
+管理者が、認証サーバーと同じデータベースへロール `app_participant` を一度作ります。アプリを増やすたびにロールは作りません。順番、`pnpm db:init`、コマンドを実行できないときの手入力は [db-init.md](db-init.md) です。認証サーバーと参加アプリで共通の手順です。
 
 付与する参照権限は次のとおりです。
 
@@ -30,13 +30,9 @@ DATABASE_URL="postgresql://app_participant:replace-me@db-host:5432/database_name
 
 見本の割り当てと本文は、スキーマ `roles` に置きます。`public` には置きません。`AppGrant` には書きません。
 
-管理者が、同じデータベースで次を一度実行します。スキーマの所有者を `app_participant` にすると、そのロールがスキーマ内のテーブルを作れます。`public` の共有テーブルへの書き込みは与えません。
+スキーマの所有者は `app_participant` です。用意のしかたは [db-init.md](db-init.md) です。`public` の共有テーブルへの書き込みは与えません。
 
-```sql
-CREATE SCHEMA IF NOT EXISTS roles AUTHORIZATION app_participant;
-```
-
-そのあと、このアプリの `DATABASE_URL` で `pnpm db:migrate` を実行します。適用されるのはスキーマ `roles` の割り当てと見本の本文だけです。
+参加アプリの起動時に、`pnpm db:migrate`（`prisma migrate deploy`）がスキーマ `roles` の型とテーブルを適用します。適用済みなら何もしません。ビルド時には適用しません。
 
 ## Redis
 
