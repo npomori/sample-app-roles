@@ -37,7 +37,7 @@ async function main() {
       [SCHEMA]
     )
     if (schema.rowCount === 0) {
-      fail('スキーマ roles がありません。pnpm db:init または手入力のあと再デプロイしてください')
+      fail('スキーマ roles がありません。認証サーバーのデータベースで初期化 SQL を実行したあと再デプロイしてください')
     }
     if (!schema.rows[0]?.can_create) {
       fail('スキーマ roles にテーブルを作る権限がありません。所有者を app_participant にしてください')
