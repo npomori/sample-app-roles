@@ -8,7 +8,7 @@
     "dev": "prisma generate && astro dev",
     "build": "prisma generate && astro build && pnpm run env:check:build",
     "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate deploy",
+    "db:migrate": "node scripts/assert-migrate-ready.mjs && prisma migrate deploy",
     "db:init": "node scripts/init-db.mjs",
     "preview": "astro preview",
     "start": "node ./dist/server/entry.mjs",

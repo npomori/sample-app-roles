@@ -32,7 +32,7 @@ DATABASE_URL="postgresql://app_participant:replace-me@db-host:5432/database_name
 
 スキーマの所有者は `app_participant` です。用意のしかたは [db-init.md](db-init.md) です。`public` の共有テーブルへの書き込みは与えません。
 
-参加アプリの起動時に、`pnpm db:migrate`（`prisma migrate deploy`）がスキーマ `roles` の型とテーブルを適用します。適用済みなら何もしません。ビルド時には適用しません。
+参加アプリの起動時に、接続ユーザーが `app_participant` でスキーマ `roles` にテーブルを作れることを確認してから、`pnpm db:migrate`（`prisma migrate deploy`）が型とテーブルを適用します。確認に失敗したときはマイグレーションを始めません。適用済みなら何もしません。ビルド時には適用しません。
 
 ## Redis
 
