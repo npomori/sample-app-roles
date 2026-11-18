@@ -53,7 +53,7 @@
 
 `APP_ID` は `^[a-z0-9-]{1,32}$` です。検証は `participant-app-base` が行います。
 
-PostgreSQL と Redis の接続文字列、許す操作、`REDIS_KEY_PREFIX` と `SESSION_MAX_AGE_SECONDS` は [connections.md](connections.md) です。起動コマンドはリポジトリの [README](../README.md) です。共有テーブルのロール作成とマイグレーションは、このアプリでは実行しません。共有テーブルの Prisma Client はライブラリが生成します。
+PostgreSQL と Redis の接続文字列、許す操作、`REDIS_KEY_PREFIX` と `SESSION_MAX_AGE_SECONDS` は [connections.md](connections.md) です。起動コマンドはリポジトリの [README](../README.md) です。共有テーブルのロール作成とマイグレーションは、このアプリでは実行しません。スキーマ `roles` は起動時に `public.create_participant_schema` で用意します。共有テーブルの Prisma Client はライブラリが生成します。
 
 ## 接続
 

@@ -2,11 +2,11 @@
 
 参加アプリは、認証サーバーと同じ PostgreSQL と Redis に接続します。接続文字列のホストとデータベース名は認証サーバーと同じです。ユーザーとパスワードは、読み書きできる認証サーバー用とは別にします。
 
-共有テーブルのロール作成とマイグレーションは行いません。スキーマ `roles` だけ、このアプリがマイグレーションします。`db:seed` はありません。
+共有テーブルのロール作成とマイグレーションは行いません。スキーマ `roles` は起動時に `public.create_participant_schema` で用意し、このアプリがマイグレーションします。`db:seed` はありません。
 
 ## PostgreSQL
 
-管理者が、認証サーバーと同じデータベースへロール `app_participant` を一度作ります。アプリを増やすたびにロールは作りません。起動処理では作りません。順番と SQL は [db-init.md](db-init.md) です。認証サーバーと参加アプリで共通の手順です。
+認証サーバーは `PARTICIPANT_DB_PASSWORD` があるとき、デプロイでロール `app_participant` を用意します。アプリを増やすたびにロールは作りません。未設定なら作りません。順番は [db-init.md](db-init.md) です。認証サーバーと参加アプリで共通の手順です。
 
 付与する参照権限は次のとおりです。
 
@@ -24,15 +24,15 @@
 DATABASE_URL="postgresql://app_participant:replace-me@db-host:5432/database_name?schema=public"
 ```
 
-`replace-me` は `CREATE ROLE` で決めたパスワードです。`database_name` は認証サーバーの `DATABASE_URL` と同じデータベース名です。認証サーバー側の接続文字列は、読み書きできるユーザーのままにします。
+`replace-me` は認証サーバーの `PARTICIPANT_DB_PASSWORD` と同じ値です。`database_name` は認証サーバーの `DATABASE_URL` と同じデータベース名です。認証サーバー側の接続文字列は、読み書きできるユーザーのままにします。
 
 ## スキーマ `roles`
 
 見本の割り当てと本文は、スキーマ `roles` に置きます。`public` には置きません。`AppGrant` には書きません。
 
-スキーマの所有者は `app_participant` です。用意のしかたは [db-init.md](db-init.md) です。`public` の共有テーブルへの書き込みは与えません。
+スキーマの所有者は `app_participant` です。起動時に `public.create_participant_schema` へ `roles` を渡して用意します。用意のしかたは [db-init.md](db-init.md) です。`public` の共有テーブルへの書き込みは与えません。
 
-参加アプリの起動時に、接続ユーザーが `app_participant` でスキーマ `roles` にテーブルを作れることを確認してから、`pnpm db:migrate`（`prisma migrate deploy`）が型とテーブルを適用します。確認に失敗したときはマイグレーションを始めません。適用済みなら何もしません。ビルド時には適用しません。
+参加アプリの起動時に、接続ユーザーが `app_participant` であることを確認し、スキーマを関数で用意してから、テーブルを作れることを確認します。そのあと `pnpm db:migrate`（`prisma migrate deploy`）が型とテーブルを適用します。確認に失敗したときはマイグレーションを始めません。適用済みなら何もしません。ビルド時には適用しません。
 
 ## Redis
 

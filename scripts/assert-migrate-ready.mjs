@@ -30,6 +30,16 @@ async function main() {
       fail(`接続ユーザーは app_participant にしてください。いまのユーザーは ${name} です`)
     }
 
+    try {
+      await client.query('SELECT public.create_participant_schema($1)', [SCHEMA])
+    } catch (error) {
+      if (error && error.code === '42883') {
+        fail('スキーマ作成関数がありません。認証サーバーをデプロイしたあと再デプロイしてください')
+      }
+      if (error && error.code === 'P0001' && error.message) fail(error.message)
+      throw error
+    }
+
     const schema = await client.query(
       `SELECT has_schema_privilege(current_user, nspname, 'CREATE') AS can_create
        FROM pg_namespace
@@ -37,7 +47,7 @@ async function main() {
       [SCHEMA]
     )
     if (schema.rowCount === 0) {
-      fail('スキーマ roles がありません。認証サーバーのデータベースで初期化 SQL を実行したあと再デプロイしてください')
+      fail('スキーマ roles がありません。認証サーバーをデプロイしたあと再デプロイしてください')
     }
     if (!schema.rows[0]?.can_create) {
       fail('スキーマ roles にテーブルを作る権限がありません。所有者を app_participant にしてください')
